@@ -135,4 +135,4 @@ streamlit run app.py
 
 ## 👤 Author
 
-[kartik padmanabhan] · [LinkedIn] · [Kartik-git9b] · 
+[kartik padmanabhan] · [LinkedIn] · [Kartik-git95] · 
