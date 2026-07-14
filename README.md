@@ -72,17 +72,45 @@ Nulls in this dataset weren't random — they meant something:
 
 Rather than stopping at aggregate metrics, this project uses SHAP to explain both global feature importance and individual predictions — and checks that individual explanations actually agree with dataset-wide patterns.
 
-**Global drivers (beeswarm summary):**
+### Global Feature Importance
+
+![SHAP summary plot - full feature set](images/shap_beeswarm_full.png)
+
+Each dot is one customer from the test set. Its horizontal position shows whether that feature pushed the prediction toward churn (right) or retention (left) for that customer, and its color shows whether the feature's value was high (red) or low (blue).
+
+![SHAP feature importance ranking](images/shap_feature_importance_bar.png)
+
+The bar chart shows the same ranking without direction, which makes relative magnitude easier to compare — `Number_of_Referrals` and contract length are clearly the two dominant drivers, each contributing roughly double the impact of mid-tier features like `Age` or `Monthly_Charge`.
+
+**Key global patterns:**
 - `Number_of_Referrals` is the single strongest predictor by a wide margin — high referral counts are strongly protective against churn
 - Contract length (`Contract_Two_Year`, `Contract_One_Year`) shows clean, expected separation — longer contracts reduce churn risk
 - `Tenure_in_Months` — low tenure clearly increases risk, consistent with new customers churning most
 - `Age` — older customers show consistently higher churn risk across the full test set, not just isolated cases
+- `Population` — customers in higher-population areas trend slightly higher-risk, plausibly reflecting more competing providers in denser markets
+- `Online_Security` and `Paperless_Billing` show smaller but consistent protective/risk effects respectively
 
-**Two contrasting individual examples:**
+### Individual Predictions — Three Examples
 
-*High-risk customer (predicted 98.8% churn probability, actually churned):* A brand-new customer (1 month tenure), month-to-month contract, fiber internet, no security/support add-ons, and — notably — age 71. Every major SHAP contributor for this customer pushed risk upward; there was no protective factor in their profile at all.
+Three individual customers were examined in detail: a confident high-risk prediction, a confident low-risk prediction, and a genuinely uncertain case in between — because a strong explainability section should show how the model behaves at the edges, not just on its easiest calls.
 
-*Low-risk customer (predicted 0.13% churn probability, actually retained):* Two-year contract, 52 months tenure, and 10 referrals — by far the largest single protective factor SHAP identified across the whole analysis.
+**High-risk customer — predicted 98.8% churn probability, actually churned:**
+
+![SHAP waterfall - high risk customer](images/shap_waterfall_high_risk.png)
+
+A brand-new customer (1 month tenure), month-to-month contract, fiber internet, no security/support add-ons, and age 71. Every major contributor pushed risk upward — there was no protective factor in this customer's profile at all.
+
+**Low-risk customer — predicted 0.13% churn probability, actually retained:**
+
+![SHAP waterfall - low risk customer](images/shap_waterfall_low_risk.png)
+
+Two-year contract, 52 months tenure, and 10 referrals — by far the largest single protective factor identified anywhere in this analysis.
+
+**Moderate-risk customer — predicted ~38% churn probability, a genuine toss-up:**
+
+![SHAP waterfall - moderate risk customer](images/shap_waterfall_moderate_risk.png)
+
+This customer shows the model isn't simply pattern-matching obvious cases. Having dependents and over a year and a half of tenure pulled risk down, while a month-to-month contract, zero referrals, and fiber internet pulled it back up — netting out to genuine uncertainty rather than a confident call in either direction. A case like this is arguably more informative than the two extreme examples alone, since it shows how the model weighs competing signals rather than leaning on any single feature.
 
 **Notable finding — correlated-feature disagreement:** `Referred_a_Friend` (binary) and `Number_of_Referrals` (count) point in *opposite* directions in the global SHAP plot, despite describing the same underlying behavior. This is a known SHAP symptom of correlated features splitting attribution unevenly, and is flagged below as a future improvement (VIF check / feature consolidation) rather than treated as a real contradictory insight.
 
@@ -128,6 +156,12 @@ streamlit run app.py
 ├── models/
 │   ├── churn_model.pkl
 │   └── model_columns.pkl
+├── images/
+│   ├── shap_beeswarm_full.png
+│   ├── shap_feature_importance_bar.png
+│   ├── shap_waterfall_high_risk.png
+│   ├── shap_waterfall_low_risk.png
+│   └── shap_waterfall_moderate_risk.png
 ├── app.py
 ├── requirements.txt
 └── README.md
@@ -135,4 +169,4 @@ streamlit run app.py
 
 ## 👤 Author
 
-[kartik padmanabhan] · [LinkedIn] · [Kartik-git95] · 
+[Kartik Padmanabhan] · [LinkedIn] · [Kartik-git95] · 
