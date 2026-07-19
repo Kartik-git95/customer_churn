@@ -19,6 +19,75 @@ import joblib
 
 st.set_page_config(page_title="Customer Churn Predictor", page_icon="📉", layout="wide")
 
+# ---------------------------------------------------------------
+# Custom CSS for Premium UI
+# ---------------------------------------------------------------
+custom_css = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Apply modern font */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Main app background and padding */
+.stApp {
+    background-color: #f8fafc;
+    padding-top: 2rem;
+}
+
+/* Sidebar styling */
+section[data-testid="stSidebar"] {
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+}
+
+/* Form expanders */
+.streamlit-expanderHeader {
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: #f1f5f9;
+    border-radius: 8px;
+}
+
+/* Number inputs and Select boxes */
+.stNumberInput > div > div, .stSelectbox > div > div > div {
+    border-radius: 8px !important;
+    border-color: #cbd5e1 !important;
+}
+
+/* The Predict Button */
+.stForm button {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.stForm button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* Metric cards */
+[data-testid="stMetric"] {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+</style>
+"""
+
+st.markdown(custom_css, unsafe_allow_html=True)
+
 
 # ---------------------------------------------------------------
 # Load model + explainer once, cache across reruns
