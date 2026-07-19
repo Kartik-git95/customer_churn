@@ -447,7 +447,7 @@ with tab2:
         input_df_clean = input_df.rename(columns={
             'Tenure in Months': 'tenure', 'Monthly Charge': 'monthly_charge',
             'Total Charges': 'total_charges', 'Total Refunds': 'total_refunds',
-            'Total Extra Data Charges': 'total_extra_data', 'Total Long Distance Charges': 'total_ld_charge',
+            'Total Extra Data Charges': 'total_extra_data', 'Total Long Distance Charges': 'total_ld_charges',
             'Avg Monthly GB Download': 'avg_gb', 'Avg Monthly Long Distance Charges': 'avg_ld_charge',
             'Number of Referrals': 'num_referrals', 'Number of Dependents': 'num_dependents',
             'Age': 'age', 'Population': 'population', 'CLTV': 'cltv',
